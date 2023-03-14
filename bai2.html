@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Danh Sách Công Việc Cần Làm</h2>
+    <input type="text" id="input" placeholder="Công việc cần làm">
+    <button onclick="start()">Bắt đầu</button>
+    <h3>Các công việc cần hoàn thành</h3>
+    <table id="table"> </table>
+    <script>
+        let listJob = JSON.parse(localStorage.getItem("listJob"))
+        function start() {
+            let valueInput = document.getElementById("input").value;
+            if (listJob == null) {
+                listJob = []
+                listJob.push(valueInput)
+                localStorage.setItem("listJob", JSON.stringify(listJob))
+            } else {
+                listJob.push(valueInput)
+                localStorage.setItem("listJob", JSON.stringify(listJob))
+            }
+            hienthicongviec()
+
+        }
+        hienthicongviec()
+
+        function hienthicongviec() {
+            let result = "";
+            for (i = 0; i < listJob.length; i++) {
+                result +=
+                    `<tr>
+                 <td>${i + 1}</td>
+                 <td>${listJob[i]}</td>
+                 <td>
+                    <button onclick="btnSua(${i})">Sửa</button>
+                 </td>
+                 <td>
+                    <button onclick="btnXoa(${i})">Xóa</button>
+                 </td>
+        </tr>  
+       `
+            }
+            document.getElementById("table").innerHTML = result
+        }
+        function btnXoa(id) {
+            listJob.splice(id, 1)
+            localStorage.setItem("listJob",JSON.stringify(listJob))
+            hienthicongviec()
+        }
+        function btnSua(id) {
+            let valueChangeInput = prompt("Mời sửa đổi công việc")
+            listJob.splice(id, 1, valueChangeInput)
+            localStorage.setItem("listJob",JSON.stringify(listJob))
+            hienthicongviec()
+        }
+    </script>
+</body>
+
+</html>

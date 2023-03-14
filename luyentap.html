@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #table {
+        height: 50px;
+        width: 600px;
+        text-align: right;
+    }
+
+    button {
+        height: 50px;
+        width: 70px;
+        border-radius: 10px;
+        background-color: rgb(245, 225, 108);
+    }
+
+    #table tr:nth-child(2n+1) {
+        background-color: rgb(228, 194, 144);
+    }
+
+    .text {
+        text-align: left;
+    }
+
+    input {
+        height: 50px;
+        width: 300px;
+    }
+</style>
+
+<body>
+    <h2>Sản Phẩm Trong Kho</h2>
+    <input type="text" id="input" placeholder="Tìm kiếm sản phẩm">
+    <button onclick="tim()">Tìm kiếm</button>
+    <h4>Sản phẩm đã tìm</h4>
+    <img src="./blue-bugcat.gif" alt="">
+    <table id="table">
+    </table>
+    <script>
+        function tim() {
+            let danhmuc = JSON.parse(localStorage.getItem("danhmuc"))
+            let valueInput = document.getElementById("input").value
+            if (danhmuc == null) {
+                danhmuc = []
+                danhmuc.push(valueInput)
+                localStorage.setItem("danhmuc",JSON.stringify(danhmuc))
+            }else{
+                danhmuc.push(valueInput)
+                localStorage.setItem("danhmuc",JSON.stringify(danhmuc))
+            }
+            danhsach()  
+        }
+        danhsach()
+        function danhsach() {
+            let danhmuc = JSON.parse(localStorage.getItem("danhmuc"))
+            let result = ""
+            for (i = 0; i < danhmuc.length; i++) {
+                result +=
+                    `   <tr>
+                    <td class="text">${danhmuc[i]}</td>
+                    <td >
+                        <button onclick="btnEdit(${i})">Edit</button>
+                    </td>
+                    <td >
+                        <button onclick="btnDetele(${i})">Delete</button>
+                    </td>
+                </tr>
+            
+            `
+            }
+            document.getElementById("table").innerHTML = result
+        }
+     
+        function btnEdit(id) {
+            let danhmuc  = JSON.parse(localStorage.getItem("danhmuc"))
+            let valueChangeInput = prompt("mời nhập sản phẩm mới")
+            danhmuc.splice(id, 1, valueChangeInput)
+            localStorage.setItem("danhmuc",JSON.stringify(danhmuc))
+            danhsach()
+        }
+        function btnDetele(id) {
+            let danhmuc  = JSON.parse(localStorage.getItem("danhmuc"))
+            danhmuc.splice(id, 1)
+            localStorage.setItem("danhmuc",JSON.stringify(danhmuc))
+            danhsach()
+        }
+        /*
+        lưu trên local storage
+        dể lưu dùng SET:tên để lưu(key) và giá trị cần lưu
+        lấy về dùng GET:get theo key
+        */
+        // localStorage.setItem("tenThoi", "Tú")
+        // let ketqua = localStorage.getItem("tenThoi")
+        // console.log(ketqua);
+    </script>
+</body>
+
+</html>
